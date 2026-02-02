@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-<!--    Extend from parent ecoverse-->
+    <!--    Extend from parent ecoverse-->
     <parent>
         <groupId>com.fpt</groupId>
         <artifactId>ecoverse_backend</artifactId>
@@ -11,27 +11,12 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>ecoverse-api</artifactId>
-    <name>ecoverse-api</name>
-    <description>ecoverse-api</description>
+    <artifactId>ecoverse-user</artifactId>
+    <name>ecoverse-user</name>
+    <description>ecoverse-user</description>
     <packaging>jar</packaging>
 
-    <properties>
-        <java.version>17</java.version>
-    </properties>
     <dependencies>
-<!--        Extend starter from parent-->
-        <dependency>
-            <groupId>com.fpt</groupId>
-            <artifactId>ecoverse-common</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <!--        Extend starter from parent-->
-        <dependency>
-            <groupId>com.fpt</groupId>
-            <artifactId>ecoverse-user</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -55,37 +40,22 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fpt</groupId>
+            <artifactId>ecoverse-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
         </plugins>
     </build>

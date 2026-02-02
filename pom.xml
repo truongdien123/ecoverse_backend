@@ -31,6 +31,7 @@
 <!--        Add modules in here-->
         <module>ecoverse-api</module>
         <module>ecoverse-common</module>
+        <module>ecoverse-user</module>
     </modules>
 
     <build>
