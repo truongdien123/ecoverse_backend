@@ -9,6 +9,7 @@ import com.fpt.ecoverseuser.dtos.requests.PartnerUpdateRequestDto;
 import com.fpt.ecoverseuser.dtos.responses.PartnerResponseDto;
 import com.fpt.ecoverseuser.entities.Partner;
 import com.fpt.ecoverseuser.mappers.PartnerMapper;
+import com.fpt.ecoverseuser.repositories.AdminRepository;
 import com.fpt.ecoverseuser.repositories.ParentRepository;
 import com.fpt.ecoverseuser.repositories.PartnerRepository;
 import com.fpt.ecoverseuser.repositories.StudentRepository;
@@ -27,24 +28,30 @@ public class PartnerServiceImp implements PartnerService {
     private final UploadFile uploadFile;
     private final ParentRepository parentRepository;
     private final StudentRepository studentRepository;
+    private final AdminRepository adminRepository;
 
-    public PartnerServiceImp(PartnerRepository partnerRepository, PartnerMapper partnerMapper, PasswordEncoder passwordEncoder, UploadFile uploadFile, ParentRepository parentRepository, StudentRepository studentRepository) {
+    public PartnerServiceImp(PartnerRepository partnerRepository, PartnerMapper partnerMapper, PasswordEncoder passwordEncoder, UploadFile uploadFile, ParentRepository parentRepository, StudentRepository studentRepository, AdminRepository adminRepository) {
         this.partnerRepository = partnerRepository;
         this.partnerMapper = partnerMapper;
         this.passwordEncoder = passwordEncoder;
         this.uploadFile = uploadFile;
         this.parentRepository = parentRepository;
         this.studentRepository = studentRepository;
+        this.adminRepository = adminRepository;
     }
 
     @Override
     public PartnerResponseDto createPartner(PartnerRegisterRequestDto request) {
-        Optional<Partner> checkingEmailPartner = partnerRepository.findByEmail(request.getEmail());
-        if (checkingEmailPartner.isPresent()) {
+        boolean existingEmail = partnerRepository.existsByEmail(request.getEmail())
+                || parentRepository.existsByEmail(request.getEmail())
+                || adminRepository.existsByEmail(request.getEmail());
+        if (existingEmail) {
             throw new BadRequestException("Email already exist");
         }
-        Optional<Partner> checkingPhoneNumberPartner = partnerRepository.findByPhoneNumber(request.getPhoneNumber());
-        if (checkingPhoneNumberPartner.isPresent()) {
+        boolean existingPhoneNumber = partnerRepository.existsByPhoneNumber(request.getPhoneNumber())
+                || parentRepository.existsByPhoneNumber(request.getPhoneNumber())
+                || adminRepository.existsByPhoneNumber(request.getPhoneNumber());
+        if (existingPhoneNumber) {
             throw new BadRequestException("Phone number already exist");
         }
         Partner partner = partnerMapper.toPartner(request, uploadFile);
