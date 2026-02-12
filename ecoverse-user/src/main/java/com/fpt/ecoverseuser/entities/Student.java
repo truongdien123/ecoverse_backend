@@ -33,13 +33,16 @@ public class Student extends BaseEntity {
     @Column(name = "points", nullable = false)
     private Integer points = 0;
 
+    @Column(name = "active", nullable = false)
+    private Boolean active = true;
+
     @ManyToOne
     @JoinColumn(name = "parent_id")
     @JsonIgnore
     private Parent parent;
 
     @ManyToOne
-    @JoinColumn(name = "partner_id")
+    @JoinColumn(name = "partnership_id")
     @JsonIgnore
     private Partner partner;
 }
