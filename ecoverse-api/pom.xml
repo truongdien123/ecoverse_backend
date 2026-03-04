@@ -32,6 +32,12 @@
             <artifactId>ecoverse-user</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
+        <!--        Add ecoverse-auth module-->
+        <dependency>
+            <groupId>com.fpt</groupId>
+            <artifactId>ecoverse-auth</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -76,6 +82,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                            <version>1.18.30</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
