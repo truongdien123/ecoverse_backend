@@ -75,7 +75,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/parent/**").hasAnyRole("PARENT", "ADMIN")
 
                         // Student endpoints
-                        .requestMatchers("/api/student/**").hasAnyRole("STUDENT", "PARENT", "ADMIN")
+                        .requestMatchers("/api/student/**").hasAnyRole("STUDENT", "PARENT", "ADMIN", "PARTNERSHIP")
 
                         // All other requests need authentication
                         .anyRequest().authenticated()
