@@ -35,6 +35,7 @@
         <module>ecoverse-common</module>
         <module>ecoverse-user</module>
         <module>ecoverse-auth</module>
+        <module>ecoverse-waste-item</module>
     </modules>
 
     <build>
