@@ -32,6 +32,12 @@
             <artifactId>ecoverse-user</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
+        <!--        Extend starter from parent-->
+        <dependency>
+            <groupId>com.fpt</groupId>
+            <artifactId>ecoverse-notification</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -63,6 +69,10 @@
             <groupId>com.cloudinary</groupId>
             <artifactId>cloudinary-http44</artifactId>
             <version>1.38.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
     </dependencies>
 

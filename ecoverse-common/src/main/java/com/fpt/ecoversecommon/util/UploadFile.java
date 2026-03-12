@@ -2,9 +2,13 @@ package com.fpt.ecoversecommon.util;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,28 @@ public class UploadFile {
             return images;
         } catch (IOException e) {
             throw new RuntimeException("Upload image failed", e);
+        }
+    }
+
+    public String uploadExcel(Workbook workbook, String fileName) {
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+
+            workbook.write(bos);
+            byte[] bytes = bos.toByteArray();
+
+            Map uploadResult = cloudinary.uploader().upload(
+                    bytes,
+                    ObjectUtils.asMap(
+                            "public_id", "reports/" + fileName,
+                            "resource_type", "raw",
+                            "overwrite", true
+                    )
+            );
+
+            return uploadResult.get("secure_url").toString();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot upload excel to Cloudinary", e);
         }
     }
 }

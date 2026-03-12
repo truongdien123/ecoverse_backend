@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
+
 @Repository
 public interface ParentRepository extends JpaRepository<Parent, String> {
 
@@ -14,4 +16,7 @@ public interface ParentRepository extends JpaRepository<Parent, String> {
 
     boolean existsByEmail(String email);
     boolean existsByPhoneNumber(String phoneNumber);
+
+    @Query("select p.email from Parent p where p.email in :emails")
+    Set<String> findExistingEmails(@Param("emails") Set<String> mails);
 }
