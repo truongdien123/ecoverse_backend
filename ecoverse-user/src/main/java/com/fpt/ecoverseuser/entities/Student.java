@@ -33,6 +33,9 @@ public class Student extends BaseEntity {
     @Column(name = "points", nullable = false)
     private Integer points = 0;
 
+    @Column(name = "active", nullable = false)
+    private Boolean active = true;
+
     @ManyToOne
     @JoinColumn(name = "parent_id")
     @JsonIgnore

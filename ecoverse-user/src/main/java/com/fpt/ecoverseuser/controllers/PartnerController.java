@@ -5,6 +5,7 @@ import com.fpt.ecoverseuser.dtos.requests.PartnerRegisterRequestDto;
 import com.fpt.ecoverseuser.dtos.requests.PartnerUpdateRequestDto;
 import com.fpt.ecoverseuser.dtos.responses.BulkCreateReportResponse;
 import com.fpt.ecoverseuser.dtos.responses.PartnerResponseDto;
+import com.fpt.ecoverseuser.dtos.responses.StudentResponseDto;
 import com.fpt.ecoverseuser.services.PartnerService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -44,5 +45,11 @@ public class PartnerController {
     public ResponseEntity<ApiResponse<?>> bulkCreate(@PathVariable("partnership_id") String partnerId, @RequestParam("file") MultipartFile file) {
         BulkCreateReportResponse response = partnerService.bulkCreate(file, partnerId);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("Bulk create partner and student successfully", response));
+    }
+
+    @GetMapping("/{partnership_id}/students/{student_id}")
+    public ResponseEntity<ApiResponse<?>> getStudentDetail(@PathVariable("partnership_id") String partnerId, @PathVariable("student_id") String studentId) {
+        StudentResponseDto response = partnerService.getStudentDetail(partnerId, studentId);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success("Get student detail successfully", response));
     }
 }

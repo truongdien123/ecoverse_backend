@@ -43,7 +43,7 @@ public class MailServiceImp implements MailService {
             try {
                 sendParentWelcome(mail);
             } catch (Exception ex) {
-                
+                throw new RuntimeException(ex);
             }
         }
     }
@@ -53,15 +53,15 @@ public class MailServiceImp implements MailService {
             maxAttempts = 3,
             backoff = @Backoff(delay = 1000, multiplier = 2.0)
     )
-    private void sendParentWelcome(ParentCredentialMail mail) throws MessagingException {
+    public void sendParentWelcome(ParentCredentialMail mail) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(
                 message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                 StandardCharsets.UTF_8.name()
         );
-        helper.setFrom(from);
-        helper.setTo(loginUrl);
+        helper.setFrom("EcoVerse <" + from + ">");
+        helper.setTo(mail.getEmail());
         helper.setSubject("[EcoVerse] Tài khoản Parent của bạn đã được tạo");
         Context context = new Context();
         context.setVariable("fullName", mail.getFullName());

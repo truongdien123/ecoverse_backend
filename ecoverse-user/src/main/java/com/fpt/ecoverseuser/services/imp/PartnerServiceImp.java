@@ -11,10 +11,13 @@ import com.fpt.ecoverseuser.dtos.requests.PartnerRegisterRequestDto;
 import com.fpt.ecoverseuser.dtos.requests.PartnerUpdateRequestDto;
 import com.fpt.ecoverseuser.dtos.responses.BulkCreateReportResponse;
 import com.fpt.ecoverseuser.dtos.responses.PartnerResponseDto;
+import com.fpt.ecoverseuser.dtos.responses.StudentResponseDto;
 import com.fpt.ecoverseuser.entities.Parent;
 import com.fpt.ecoverseuser.entities.Partner;
 import com.fpt.ecoverseuser.entities.Student;
+import com.fpt.ecoverseuser.mappers.ParentMapper;
 import com.fpt.ecoverseuser.mappers.PartnerMapper;
+import com.fpt.ecoverseuser.mappers.StudentMapper;
 import com.fpt.ecoverseuser.repositories.*;
 import com.fpt.ecoverseuser.services.PartnerService;
 import org.apache.poi.ss.usermodel.*;
@@ -51,8 +54,10 @@ public class PartnerServiceImp implements PartnerService {
     private final AdminRepository adminRepository;
     private final CheckingEmailRepository checkingEmailRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final ParentMapper parentMapper;
+    private final StudentMapper studentMapper;
 
-    public PartnerServiceImp(PartnerRepository partnerRepository, PartnerMapper partnerMapper, PasswordEncoder passwordEncoder, UploadFile uploadFile, ParentRepository parentRepository, StudentRepository studentRepository, AdminRepository adminRepository, CheckingEmailRepository checkingEmailRepository, ApplicationEventPublisher eventPublisher) {
+    public PartnerServiceImp(PartnerRepository partnerRepository, PartnerMapper partnerMapper, PasswordEncoder passwordEncoder, UploadFile uploadFile, ParentRepository parentRepository, StudentRepository studentRepository, AdminRepository adminRepository, CheckingEmailRepository checkingEmailRepository, ApplicationEventPublisher eventPublisher, ParentMapper parentMapper, StudentMapper studentMapper) {
         this.partnerRepository = partnerRepository;
         this.partnerMapper = partnerMapper;
         this.passwordEncoder = passwordEncoder;
@@ -62,6 +67,8 @@ public class PartnerServiceImp implements PartnerService {
         this.adminRepository = adminRepository;
         this.checkingEmailRepository = checkingEmailRepository;
         this.eventPublisher = eventPublisher;
+        this.parentMapper = parentMapper;
+        this.studentMapper = studentMapper;
     }
 
     @Override
@@ -190,9 +197,11 @@ public class PartnerServiceImp implements PartnerService {
             if (dto.getGrade() == null || dto.getGrade().trim().isEmpty()) {
                 studentResults.add(RowResult.failed(rowNo, dto, "Student grade required"));
             }
+            String studentCode = generateStudentCode(dto.getFullName(), dto.getGrade(), dto.getClassNumber());
             Student student = new Student();
             student.setFullName(dto.getFullName().trim());
             student.setGrade(dto.getGrade());
+            student.setStudentCode(studentCode);
             student.setPartner(partner.get());
 
             studentRepository.save(student);
@@ -221,6 +230,43 @@ public class PartnerServiceImp implements PartnerService {
         response.setExpiresIn(86400); // 24h
 
         return response;
+    }
+
+    private String getInitialInFullName(String fullName) {
+        if (fullName == null || fullName.isEmpty()) {
+            return "";
+        }
+        String[] words = fullName.trim().split("\\s+");
+        StringBuilder initials = new StringBuilder();
+        for (String word : words) {
+            initials.append(Character.toUpperCase(word.charAt(0)));
+        }
+        return initials.toString();
+    }
+
+    private String generateStudentCode(String fullName, String grade, String order) {
+        String initials = getInitialInFullName(fullName);
+        return initials+grade+order;
+    }
+
+    @Override
+    public StudentResponseDto getStudentDetail(String partnerId, String studentId) {
+        Optional<Partner> partner = partnerRepository.findById(partnerId);
+        if (!partner.isPresent()) {
+            throw new NotFoundException("Not found partner");
+        }
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (!student.isPresent()) {
+            throw new NotFoundException("Not found student");
+        }
+        StatisticStudent statistic = new StatisticStudent();
+        StudentResponseDto studentResponseDto = studentMapper.toStudentResponse(student.get());
+        if (student.get().getParent() != null) {
+            Optional<Parent> parent = parentRepository.findById(student.get().getParent().getId());
+            studentResponseDto.setParent(parentMapper.toParentResponse(parent.get()));
+        }
+        studentResponseDto.setStatistics(statistic);
+        return studentResponseDto;
     }
 
     private String generateReportFile(
@@ -253,9 +299,10 @@ public class PartnerServiceImp implements PartnerService {
 
                 Row row = studentSheet.createRow(rowIdx++);
 
-                row.createCell(0).setCellValue(result.getData().getFullName());
-                row.createCell(1).setCellValue(result.getData().getGrade());
-                row.createCell(2).setCellValue(result.getMessage());
+                row.createCell(0).setCellValue(result.getData().getClassNumber());
+                row.createCell(1).setCellValue(result.getData().getFullName());
+                row.createCell(2).setCellValue(result.getData().getGrade());
+                row.createCell(3).setCellValue(result.getMessage());
             }
 
             // Upload file
@@ -319,8 +366,9 @@ public class PartnerServiceImp implements PartnerService {
                 continue;
             }
             StudentExcelRowDto dto = new StudentExcelRowDto();
-            dto.setFullName(fmt.formatCellValue(row.getCell(0)));
-            dto.setGrade(fmt.formatCellValue(row.getCell(1)));
+            dto.setClassNumber(fmt.formatCellValue(row.getCell(0)));
+            dto.setFullName(fmt.formatCellValue(row.getCell(1)));
+            dto.setGrade(fmt.formatCellValue(row.getCell(2)));
 
             rows.add(new RowInput<>(i+1, dto));
         }

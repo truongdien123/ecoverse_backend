@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentExcelRowDto {
+    private String classNumber;
     private String fullName;
     private String grade;
 }
