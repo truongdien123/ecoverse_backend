@@ -43,7 +43,7 @@ public class Parent extends BaseEntity {
     private Boolean active = true;
 
     @ManyToOne
-    @JoinColumn(name = "partner_id")
+    @JoinColumn(name = "partnership_id")
     @JsonIgnore
     private Partner partner;
 
