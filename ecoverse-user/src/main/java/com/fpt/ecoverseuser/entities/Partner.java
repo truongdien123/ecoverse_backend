@@ -13,7 +13,7 @@ import org.hibernate.annotations.Nationalized;
 import java.util.List;
 
 @Entity
-@Table(name = "partners")
+@Table(name = "partnerships")
 @Getter
 @Setter
 @NoArgsConstructor

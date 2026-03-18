@@ -42,7 +42,7 @@ public class Student extends BaseEntity {
     private Parent parent;
 
     @ManyToOne
-    @JoinColumn(name = "partner_id")
+    @JoinColumn(name = "partnership_id")
     @JsonIgnore
     private Partner partner;
 }
