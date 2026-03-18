@@ -39,4 +39,11 @@ public class ExceptionHandlerConfig {
         String message = ex.getMessage();
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ApiResponse.error(message));
     }
+
+    @ExceptionHandler(value = FileHandlingException.class)
+    public ResponseEntity<ApiResponse<?>> handleFileException(FileHandlingException ex) {
+        LOG.error(ex.getMessage(), ex);
+        String message = ex.getMessage();
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(ApiResponse.error(message));
+    }
 }

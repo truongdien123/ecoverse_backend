@@ -34,6 +34,7 @@
         <module>ecoverse-api</module>
         <module>ecoverse-common</module>
         <module>ecoverse-user</module>
+        <module>ecoverse-notification</module>
         <module>ecoverse-auth</module>
     </modules>
 

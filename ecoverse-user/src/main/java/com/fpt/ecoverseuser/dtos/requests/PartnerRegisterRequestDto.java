@@ -38,4 +38,6 @@ public class PartnerRegisterRequestDto {
     private String address;
 
     private MultipartFile avatar;
+
+
 }
