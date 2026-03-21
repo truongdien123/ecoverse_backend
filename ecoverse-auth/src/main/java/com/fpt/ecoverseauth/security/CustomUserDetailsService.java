@@ -6,6 +6,7 @@ import com.fpt.ecoverseauth.repositories.ParentRepository;
 import com.fpt.ecoverseauth.repositories.PartnershipRepository;
 import com.fpt.ecoverseauth.repositories.StudentRepository;
 import com.fpt.ecoversecommon.exception.NotFoundException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,15 +20,18 @@ import org.springframework.stereotype.Service;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
+    @Qualifier("authAdminRepository")
     private AdminRepository adminRepository;
 
     @Autowired
+    @Qualifier("authParentRepository")
     private ParentRepository parentRepository;
 
     @Autowired
     private PartnershipRepository partnershipRepository;
 
     @Autowired
+    @Qualifier("authStudentRepository")
     private StudentRepository studentRepository;
 
     @Override
