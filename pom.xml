@@ -36,6 +36,7 @@
         <module>ecoverse-user</module>
         <module>ecoverse-auth</module>
         <module>ecoverse-waste-item</module>
+        <module>ecoverse-quiz</module>
     </modules>
 
     <build>

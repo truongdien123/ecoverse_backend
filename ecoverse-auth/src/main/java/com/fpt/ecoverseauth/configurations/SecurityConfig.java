@@ -42,6 +42,7 @@ public class SecurityConfig {
             "/api/auth/refresh",
             "/api/auth/logout",
             "/api/waste-items/**",
+            "/api/quiz/**",
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/actuator/**"
