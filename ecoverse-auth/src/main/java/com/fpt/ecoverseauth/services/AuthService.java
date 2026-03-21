@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  * Authentication Service - handles login logic for all user types
  */
 @Service
-public class AuthService {
+public class AuthService implements IAuthService {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -31,6 +31,7 @@ public class AuthService {
     /**
      * Login for Admin, Parent, and Partnership users
      */
+    @Override
     public LoginResponse login(LoginRequest request) {
         // Validate user type
         if (request.getUserType() == UserType.STUDENT) {
@@ -82,6 +83,7 @@ public class AuthService {
     /**
      * Login for Student users (using student code)
      */
+    @Override
     public LoginResponse studentLogin(StudentLoginRequest request) {
         // Load student by code
         CustomUserDetails userDetails = (CustomUserDetails) userDetailsService
@@ -123,6 +125,7 @@ public class AuthService {
     /**
      * Refresh access token using refresh token
      */
+    @Override
     public LoginResponse refreshToken(String refreshToken) {
         // Validate refresh token
         if (!jwtUtils.validateToken(refreshToken)) {

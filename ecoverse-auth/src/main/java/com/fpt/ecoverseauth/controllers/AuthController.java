@@ -3,7 +3,7 @@ package com.fpt.ecoverseauth.controllers;
 import com.fpt.ecoverseauth.dto.request.LoginRequest;
 import com.fpt.ecoverseauth.dto.request.StudentLoginRequest;
 import com.fpt.ecoverseauth.dto.response.LoginResponse;
-import com.fpt.ecoverseauth.services.AuthService;
+import com.fpt.ecoverseauth.services.IAuthService;
 import com.fpt.ecoversecommon.dto.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private AuthService authService;
+    private IAuthService authService;
 
     /**
      * Login endpoint for Admin, Parent, and Partnership users

@@ -1,0 +1,29 @@
+package com.fpt.ecoverseuser.dtos.responses;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ParentResponseDto {
+
+    @JsonProperty("parent_id")
+    private String parentId;
+
+    @JsonProperty("full_name")
+    private String fullName;
+
+    @JsonProperty("phone_number")
+    private String phoneNumber;
+
+    @JsonProperty("address")
+    private String address;
+
+    @JsonProperty("email")
+    private String email;
+}
