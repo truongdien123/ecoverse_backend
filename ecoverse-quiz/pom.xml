@@ -3,7 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-<!--    Extend from parent ecoverse-->
     <parent>
         <groupId>com.fpt</groupId>
         <artifactId>ecoverse_backend</artifactId>
@@ -11,62 +10,40 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>ecoverse-api</artifactId>
-    <name>ecoverse-api</name>
-    <description>ecoverse-api</description>
+    <artifactId>ecoverse-quiz</artifactId>
+    <name>ecoverse-quiz</name>
+    <description>Quiz module - quiz templates, questions, attempts, placements</description>
     <packaging>jar</packaging>
 
     <properties>
         <java.version>17</java.version>
     </properties>
+
     <dependencies>
-<!--        Extend starter from parent-->
+        <!-- Common module -->
         <dependency>
             <groupId>com.fpt</groupId>
             <artifactId>ecoverse-common</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
-        <!--        Extend starter from parent-->
+        <!-- User module (for Student entity reference) -->
         <dependency>
             <groupId>com.fpt</groupId>
             <artifactId>ecoverse-user</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
-        <!--        Extend starter from parent-->
+
         <dependency>
-            <groupId>com.fpt</groupId>
-            <artifactId>ecoverse-notification</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <!--        Add ecoverse-auth module-->
-        <dependency>
-            <groupId>com.fpt</groupId>
-            <artifactId>ecoverse-auth</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <!--        Add ecoverse-waste-item module-->
-        <dependency>
-            <groupId>com.fpt</groupId>
-            <artifactId>ecoverse-waste-item</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <!--        Add ecoverse-quiz module-->
-        <dependency>
-            <groupId>com.fpt</groupId>
-            <artifactId>ecoverse-quiz</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -74,9 +51,8 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -84,13 +60,15 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.cloudinary</groupId>
-            <artifactId>cloudinary-http44</artifactId>
-            <version>1.38.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- H2 in-memory DB for tests -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -100,6 +78,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -109,19 +90,6 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
-
 </project>
